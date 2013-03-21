@@ -21,6 +21,8 @@ public class ServerRemovesConstructionBlock : MonoBehaviour {
 	
 	public bool destroySignal = false;
 	
+	public GameObject explosion;
+	
 	
 	//A list is used to capture all the names of blocks to be destroyed.
 	
@@ -48,6 +50,7 @@ public class ServerRemovesConstructionBlock : MonoBehaviour {
 				
 				foreach(string blockName in destroyedConstructionBlocks)
 				{
+					networkView.RPC("InstantiateConstBlockExplosion", RPCMode.All, blockName);
 					//Send the destroy RPC to all game instances and buffer it
 					//so that the block is removed for future players that join. 
 							
@@ -72,5 +75,12 @@ public class ServerRemovesConstructionBlock : MonoBehaviour {
 		
 	 	Destroy(go);
 
+	}
+	
+	[RPC]
+	void InstantiateConstBlockExplosion(string blockName)
+	{
+		GameObject go = GameObject.Find (blockName);
+		Instantiate(explosion,go.transform.position,go.transform.rotation);
 	}
 }

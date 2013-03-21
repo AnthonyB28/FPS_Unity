@@ -4,12 +4,12 @@ using System.Collections;
 public class MultiplayerScript : MonoBehaviour {
 	
 	private string titleMessage = "Prototype";
-	private string connectToIP = "127.0.0.1";
+	private string connectToIP = "96.250.232.36";
 	private int connectionPort = 26500;
 	private bool useNAT = true;
 	private string ipAddress;
 	private string port;
-	private int numOfPlayers = 10;
+	private int numOfPlayers = 20;
 	public string playerName;
 	public string serverName;
 	public string serverNameForClient;

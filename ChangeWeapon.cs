@@ -18,6 +18,8 @@ public class ChangeWeapon : MonoBehaviour {
 		
 		particleCannon,
 		
+		rocket,
+		
 		blockEraser
 		
 	}
@@ -59,6 +61,8 @@ public class ChangeWeapon : MonoBehaviour {
 	
 	public Texture particleCannonIcon;
 	
+	public Texture rocketIcon;
+	
 	
 	private GUIStyle weaponStyle = new GUIStyle();
 
@@ -90,6 +94,8 @@ public class ChangeWeapon : MonoBehaviour {
 			weaponList.Add(State.blaster);
 			
 			weaponList.Add(State.particleCannon);
+			
+			weaponList.Add(State.rocket);
 			
 			weaponList.Add(State.blockEraser);
 			
@@ -135,6 +141,11 @@ public class ChangeWeapon : MonoBehaviour {
 		if(selectedWeapon == ChangeWeapon.State.blaster)
 		{
 			GUILayout.Label(blasterIcon, weaponStyle, GUILayout.Width(labelWidth), GUILayout.Height(labelHeight));
+		}
+		
+		if(selectedWeapon == ChangeWeapon.State.rocket)
+		{
+			GUILayout.Label(rocketIcon, weaponStyle, GUILayout.Width(labelWidth), GUILayout.Height(labelHeight));	
 		}
 		
 		if(selectedWeapon == ChangeWeapon.State.particleCannon)

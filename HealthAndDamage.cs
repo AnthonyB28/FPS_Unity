@@ -20,6 +20,11 @@ public class HealthAndDamage : MonoBehaviour {
 	public bool hitByParticleCannon = false;
 	public float particleD = 1.5f;
 	
+	public bool hitByRocket = false;
+	public float rocketD = 80;
+	
+	public bool enterDestroyBoundary = false;
+	public float destroyBoundaryDamage = 1000;
 	private bool destroyed = false;
 	
 	//Player Health
@@ -27,6 +32,8 @@ public class HealthAndDamage : MonoBehaviour {
 	public float maxHealth = 100;
 	private float healthRegen = 1.3f;
 	public float previousHealth = 100;
+	
+	public GameObject explosion;
 	
 	public bool takingFallDamage = false;
 	public float fallDamage;
@@ -97,7 +104,26 @@ public class HealthAndDamage : MonoBehaviour {
 											RPCMode.Others, myHealth);
 				hitByParticleCannon = false;
 			}
+						
+			if(hitByRocket == true && destroyed == false)
+			{
+				myHealth = myHealth - rocketD;
+				networkView.RPC ("UpdateMyCurrentAttackerEverywhere",RPCMode.Others, myAttacker);
+				networkView.RPC ("UpdateMyCurrentHealthEverywhere",
+											RPCMode.Others, myHealth);
+				hitByRocket = false;
+			}
 			
+						if(enterDestroyBoundary == true && destroyed == false)
+			{
+				myHealth = myHealth - destroyBoundaryDamage;
+				myAttacker = "left the boundary of map.";
+				networkView.RPC ("UpdateMyCurrentAttackerEverywhere",RPCMode.Others, myAttacker);
+				networkView.RPC ("UpdateMyCurrentHealthEverywhere",
+											RPCMode.Others, myHealth);
+				enterDestroyBoundary = false;
+			}
+						
 			//Once player is dead, destroyed is set to true and the attacker gets score.
 			if(myHealth <= 0 && destroyed == false)
 			{
@@ -105,7 +131,7 @@ public class HealthAndDamage : MonoBehaviour {
 				destroyed = true;
 							
 				//The attacking player should be the only one getting a score, no attacking player then forget it
-				if(myAttacker != "suicided")
+				if(myAttacker != "suicided" && myAttacker != "left the boundary of map")
 				{
 				GameObject attacker = GameObject.Find (myAttacker);
 				PlayerScore scoreScript = attacker.GetComponent<PlayerScore>();
@@ -174,6 +200,8 @@ public class HealthAndDamage : MonoBehaviour {
 	[RPC]
 		void DestroySelf()
 	{
+		
+		Instantiate(explosion,transform.position,transform.rotation);
 		Destroy (parentObject);
 	}
 	[RPC]

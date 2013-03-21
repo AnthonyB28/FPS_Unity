@@ -4,7 +4,7 @@ using System.Collections;
 public class BlasterScript : MonoBehaviour {
 	private Transform myTransform;
 	
-	private float projectileSpeed = 10;
+	private float projectileSpeed = 20;
 	
 	private bool expended = false;
 	
